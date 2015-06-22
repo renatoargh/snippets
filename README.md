@@ -30,3 +30,8 @@ SELECT table_schema "Data Base Name",
 FROM information_schema.TABLES
 GROUP BY table_schema;
 ```
+
+### Prevent aciddental shutdowns during SSH sessions
+```shell
+alias shutdown='echo '\''Shutdown not allowed... You can reboot instead'\'''
+```
