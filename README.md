@@ -1,5 +1,5 @@
 # snippets
-Code snippets
+General code snippets.
 
 ### Getting Amazon S3 bucket size with aws-cli
 ```shell
