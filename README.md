@@ -17,3 +17,7 @@ OBS.: Unsecure to add credentials on CLI commands, instead add it to env variabl
 ```shell
 curl -u yourUser:yourPass https://api.github.com/repos/yourUserName/yourRepo/releases/latest | grep tag_name | grep -o "[0-9]\.[0-9]\.[0-9]\{1,\}"
 ```
+### Easy Amazon EC2 snapshot backup
+```shell
+aws ec2 create-snapshot --volume-id vol-df123123 --description "`date +"%Y_%m_%d-%H_%M_%S"` - Backup"
+```
