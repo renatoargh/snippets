@@ -21,3 +21,12 @@ curl -u yourUser:yourPass https://api.github.com/repos/yourUserName/yourRepo/rel
 ```shell
 aws ec2 create-snapshot --volume-id vol-df123123 --description "`date +"%Y_%m_%d-%H_%M_%S"` - Backup"
 ```
+
+### Getting MySQL database size in MB
+```sql
+SELECT table_schema "Data Base Name",
+    sum( data_length + index_length ) / 1024 / 1024 "Data Base Size in MB",
+    sum( data_free )/ 1024 / 1024 "Free Space in MB"
+FROM information_schema.TABLES
+GROUP BY table_schema;
+```
