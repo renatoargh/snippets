@@ -1,6 +1,29 @@
 # snippets
 General code snippets.
 
+### How to cleanup MySQL database completely
+
+```sql
+SET FOREIGN_KEY_CHECKS = 0;
+SET GROUP_CONCAT_MAX_LEN = 32768;
+SET @tables = NULL;
+SELECT GROUP_CONCAT('`', table_name, '`') INTO @tables FROM information_schema.tables WHERE table_schema = (SELECT DATABASE());
+SET @tables = CONCAT('DROP TABLE IF EXISTS ', @tables);
+SELECT IFNULL(@tables, 'SELECT 1') INTO @tables;
+PREPARE stmt FROM @tables;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+SET FOREIGN_KEY_CHECKS = 1;
+SET @views = NULL;
+SELECT GROUP_CONCAT(table_schema, '.', table_name) INTO @views
+ FROM information_schema.views
+ WHERE table_schema IN (select database());
+SET @views = IFNULL(CONCAT('DROP VIEW ', @views), 'SELECT "No Views"');
+PREPARE stmt2 FROM @views;
+EXECUTE stmt2;
+DEALLOCATE PREPARE stmt2;
+```
+
 ### Getting Amazon S3 bucket size with aws-cli
 ```shell
 aws s3api list-objects --bucket yourBucket --output json --query "[sum(Contents[].Size), length(Contents[])]"
