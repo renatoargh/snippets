@@ -31,7 +31,7 @@ aws s3api list-objects --bucket yourBucket --output json --query "[sum(Contents[
 ### Easy MySQL database backup to Amazon S3
 ```shell
 function bkp {
-    mysqldump -u user -h localhost -ppassword $1 | aws s3 cp - s3://yourBucket/`hostname`/$1/`date +"%Y_%m_%d-%H_%M_%S"`.sql;
+    mysqldump -u user -h localhost -ppassword --single-transaction $1 | aws s3 cp - s3://yourBucket/`hostname`/$1/`date +"%Y_%m_%d-%H_%M_%S"`.sql;
 }
 ```
 OBS.: Unsecure to add credentials on CLI commands, instead add it to env variables
