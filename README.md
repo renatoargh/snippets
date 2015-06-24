@@ -38,7 +38,7 @@ OBS.: Unsecure to add credentials on CLI commands, instead add it to env variabl
 
 ### Getting latest release version of a given GitHub repository
 ```shell
-curl -u yourUser:yourPass https://api.github.com/repos/yourUserName/yourRepo/releases/latest | grep tag_name | grep -o "[0-9]\.[0-9]\.[0-9]\{1,\}"
+curl -u yourUser:yourPass https://api.github.com/repos/yourUserName/yourRepo/releases/latest | grep tag_name | awk '{print $2}' | cut -d "\"" -f 2
 ```
 ### Easy Amazon EC2 snapshot backup
 ```shell
