@@ -1,6 +1,12 @@
 # snippets
 General code snippets.
 
+### How to reset auto increment value for a MySQL table?
+
+```sql
+ALTER TABLE tablename AUTO_INCREMENT = 1
+```
+
 ### How to cleanup MySQL database completely
 
 ```sql
