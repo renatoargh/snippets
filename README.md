@@ -1,7 +1,7 @@
 # snippets
 General code snippets.
 
-### How to reset auto increment value for a MySQL table?
+### How to reset auto increment value for a MySQL table
 
 ```sql
 ALTER TABLE tablename AUTO_INCREMENT = 1
@@ -34,7 +34,7 @@ DEALLOCATE PREPARE stmt2;
 ```shell
 aws s3api list-objects --bucket yourBucket --output json --query "[sum(Contents[].Size), length(Contents[])]"
 ```
-### Easy MySQL database backup to Amazon S3
+### Easy MySQL database backup to Amazon S3 with aws-cli and mysqldump
 ```shell
 function bkp {
     mysqldump -u user -h localhost -ppassword --single-transaction $1 | aws s3 cp - s3://yourBucket/`hostname`/$1/`date +"%Y_%m_%d-%H_%M_%S"`.sql;
