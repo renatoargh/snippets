@@ -1,6 +1,17 @@
 # snippets
 General code snippets.
 
+### How do I change MySQL user password?
+```sql
+SET PASSWORD FOR 'user-name-here'@'hostname-name-here' = PASSWORD('new-password-here');
+FLUSH PRIVILEGES;
+```
+
+### How do I delete/remove MySQL user?
+```sql
+DROP USER 'user'@'localhost';
+```
+
 ### How to reset auto increment value for a MySQL table
 
 ```sql
