@@ -52,7 +52,7 @@ function bkp {
     
 # or
 
-bkp () {
+bkp() {
     mysqldump -u user -h localhost -ppassword --single-transaction $1 | aws s3 cp - s3://yourBucket/`hostname`/$1/`date +"%Y_%m_%d-%H_%M_%S"`.sql;
 }
 ```
