@@ -64,16 +64,16 @@ aws s3api list-objects --bucket yourBucket --output json --query "[sum(Contents[
 ### Easy MySQL database backup to Amazon S3 with aws-cli and mysqldump
 ```shell
 function bkp {
-    mysqldump -u user -h localhost -ppassword --single-transaction $1 | aws s3 cp - s3://yourBucket/`hostname`/$1/`date +"%Y_%m_%d-%H_%M_%S"`.sql;
+    /usr/bin/mysqldump -u user -h localhost -ppassword $1 | gzip | /usr/local/bin/aws s3 cp - s3://bucket/backups/`hostname`/$1/`date +"%Y_%m_%d"`/`date +"%Y_%m_%d-%H_%M_%S"`.gz;
 }
 
 # or
 
 bkp() {
-    mysqldump -u user -h localhost -ppassword --single-transaction $1 | aws s3 cp - s3://yourBucket/`hostname`/$1/`date +"%Y_%m_%d-%H_%M_%S"`.sql;
+    /usr/bin/mysqldump -u user -h localhost -ppassword $1 | gzip | /usr/local/bin/aws s3 cp - s3://bucket/backups/`hostname`/$1/`date +"%Y_%m_%d"`/`date +"%Y_%m_%d-%H_%M_%S"`.gz;
 }
 ```
-OBS.: Unsecure to add credentials on CLI commands, instead add it to env variables
+OBS.: It is unsecure to add credentials on CLI commands, instead add it to env variables
 
 ### Getting latest release version of a given GitHub repository
 ```shell
