@@ -11,7 +11,7 @@ zaz 9
 rebers 10
 ```
 
-You can get the average value of the second column using `awk` like this:
+You can get the average value of the second column by using `awk` like this:
 
 ```bash
 cat file.txt | awk '{ total += $2; count++ } END { print total/count }'
