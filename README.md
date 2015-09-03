@@ -1,6 +1,22 @@
 # snippets
 General code snippets.
 
+### How do I get the average of a series os values from stdin?
+
+Say you have the file:
+```text
+foo 3
+bar 4
+zaz 9
+rebers 10
+```
+
+You can get the average value of the second column using `awk` like this:
+
+```bash
+cat file.txt | awk '{ total += $2; count++ } END { print total/count }'
+```
+
 ### How do I change MySQL user password?
 ```sql
 SET PASSWORD FOR 'user-name-here'@'hostname-name-here' = PASSWORD('new-password-here');
