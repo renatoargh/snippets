@@ -1,7 +1,7 @@
 # snippets
 General code snippets.
 
-### How do I get the average of a series os values from stdin?
+### How do I get the average from a series of values from stdin?
 
 Say you have the file:
 ```text
