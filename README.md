@@ -1,6 +1,14 @@
 # snippets
 General code snippets.
 
+### Ensuring that if one value is provided then another is also necessary in JavaScript
+
+```javascript
+if ((latitude === null) !== (longitude === null)) {
+    throw new Error('Require either both latitude and longitude or neither')
+}
+```
+
 ### How do I get the average from a series of values from stdin?
 
 Say you have the file:
