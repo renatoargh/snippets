@@ -25,6 +25,18 @@ You can get the average value of the second column by using `awk` like this:
 cat file.txt | awk '{ total += $2; count++ } END { print total/count }'
 ```
 
+### How do I find the whole data for the row with some max value in a column per some group identifier in MySQL?
+
+```sql
+SELECT a.*
+FROM YourTable a
+LEFT OUTER JOIN YourTable b
+    ON a.id = b.id AND a.revision < b.revision
+WHERE b.id IS NULL;
+```
+
+_Taken from StackOverflow: http://stackoverflow.com/a/7745635/91403_
+
 ### How do I change MySQL user password?
 ```sql
 SET PASSWORD FOR 'user-name-here'@'hostname-name-here' = PASSWORD('new-password-here');
