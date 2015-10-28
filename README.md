@@ -77,6 +77,18 @@ EXECUTE stmt2;
 DEALLOCATE PREPARE stmt2;
 ```
 
+You may need to drop all events from the database. I am not sure why the following snippet doesn't work
+```sql
+SET @events = NULL;
+SELECT GROUP_CONCAT('`', EVENT_NAME, '`') INTO @events FROM information_schema.events  WHERE EVENT_SCHEMA = (SELECT DATABASE());
+SET @events = CONCAT('DROP EVENT IF EXISTS ', @events);
+SELECT IFNULL(@events, 'SELECT 1') INTO @events;
+select * from @events;
+PREPARE stmt2 FROM @events;
+EXECUTE stmt2;
+DEALLOCATE PREPARE stmt2;
+```
+
 ### Getting Amazon S3 bucket size with aws-cli
 ```shell
 aws s3api list-objects --bucket yourBucket --output json --query "[sum(Contents[].Size), length(Contents[])]"
