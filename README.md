@@ -107,6 +107,63 @@ bkp() {
 ```
 OBS.: It is unsecure to add credentials on CLI commands, instead add it to env variables
 
+### Full MySQL instance backup to Amazon S3 with aws-cli and mysqldump
+
+**backup.sh**
+```bash
+#!/bin/bash
+
+function bkp {
+    echo " > $1"
+
+    [ -f backup.sql ] && rm backup.sql 
+    [ -f backup.sql.gz ] && rm backup.sql.gz
+
+    mysqldump --login-path=backup --events --default-character-set=utf8 --result-file=backup.sql --single-transaction $1
+    gzip backup.sql 
+    aws s3 cp --quiet backup.sql.gz s3://gammasoft/backups/`hostname`/$1/`date +"%Y_%m_%d"`/$1`date +"-%d_%m_%Y-%H_%M_%S"`.gz;
+
+    [ -f backup.sql ] && rm backup.sql 
+    [ -f backup.sql.gz ] && rm backup.sql.gz
+}
+
+echo Iniciando backup em `date +"%d/%m/%Y %H:%M:%S"`
+
+for db in $(mysql --login-path=backup -e 'show databases' | node filtrarDatabases.js ); do
+    bkp ${db}
+done
+
+echo Backup finalizado  em `date +"%d/%m/%Y %H:%M:%S"`
+echo ---------------------------------------
+```
+
+**filtrarDatabases.js**
+```javascript
+var readline = require('readline'),
+    rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+        terminal: false
+    }),
+    ignorar = [
+        'Database', 
+	'mysql',
+        'information_schema', 
+        'performance_schema',
+        'Warning: Using a password on the command line interface can be insecure.'
+    ];
+
+rl.on('line', function(line) {
+    line = line.replace(/\+-\|/g, '').trim();
+
+    if(ignorar.indexOf(line) === -1) {
+        console.log(line);
+    }
+});
+```
+
+Before running `backup.sh` you will have to execute `mysql_config_editor set --login-path=backup --host=localhost --user=yourMySqlUser --password` (it will then ask for your password). Its just to prevent using password on the command line interface.
+
 ### Getting latest release version of a given GitHub repository
 ```shell
 curl -u yourUser:yourPass https://api.github.com/repos/yourUserName/yourRepo/releases/latest | grep tag_name | awk '{print $2}' | cut -d "\"" -f 2
