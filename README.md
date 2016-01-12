@@ -121,7 +121,7 @@ function bkp {
 
     mysqldump --login-path=backup --events --default-character-set=utf8 --result-file=backup.sql --single-transaction $1
     gzip backup.sql 
-    aws s3 cp --quiet backup.sql.gz s3://gammasoft/backups/`hostname`/$1/`date +"%Y_%m_%d"`/$1`date +"-%d_%m_%Y-%H_%M_%S"`.gz;
+    aws s3 cp --quiet backup.sql.gz s3://yourBucket/backups/`hostname`/$1/`date +"%Y_%m_%d"`/$1`date +"-%d_%m_%Y-%H_%M_%S"`.gz;
 
     [ -f backup.sql ] && rm backup.sql 
     [ -f backup.sql.gz ] && rm backup.sql.gz
@@ -129,7 +129,7 @@ function bkp {
 
 echo Iniciando backup em `date +"%d/%m/%Y %H:%M:%S"`
 
-for db in $(mysql --login-path=backup -e 'show databases' | node filtrarDatabases.js ); do
+for db in $(mysql --login-path=backup -e 'show databases' | node filtrarDatabases.js); do
     bkp ${db}
 done
 
@@ -147,7 +147,7 @@ var readline = require('readline'),
     }),
     ignorar = [
         'Database', 
-	'mysql',
+        'mysql',
         'information_schema', 
         'performance_schema',
         'Warning: Using a password on the command line interface can be insecure.'
