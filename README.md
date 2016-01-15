@@ -35,6 +35,32 @@ LEFT OUTER JOIN YourTable b
 WHERE b.id IS NULL;
 ```
 
+**Example**
+```sql
+SELECT 
+	a.clienteId as clienteId,
+	clientes.nome as cliente, 
+	c.iniciadaEm as iniciadoEm,
+	a.finalizadaEm as finalizadoEm,
+	TIMEDIFF(a.finalizadaEm, c.iniciadaEm) as tempoGasto
+FROM etapasDeImplantacao a
+	INNER JOIN clientes 
+		ON a.clienteId = clientes.id
+	LEFT OUTER JOIN etapasDeImplantacao b
+    	ON a.clienteId = b.clienteId AND a.id < b.id
+    JOIN (SELECT 
+		clienteId, 
+		MIN(iniciadaEm) as iniciadaEm
+	FROM 
+		etapasDeImplantacao 
+	GROUP BY 
+		clienteId) c ON a.clienteId = c.clienteId
+WHERE 
+	b.id IS NULL
+ORDER BY
+	tempoGasto DESC
+```
+
 _Taken from StackOverflow: http://stackoverflow.com/a/7745635/91403_
 
 ### How do I change MySQL user password?
