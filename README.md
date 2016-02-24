@@ -1,6 +1,12 @@
 # snippets
 General code snippets.
 
+### How to send StatsD metric from bash script
+
+```bash
+echo "deploys.test.myservice:1|c" | nc -w 1 -u statsd.example.com 8125
+```
+
 ### Ensuring that if one value is provided then another is also necessary in JavaScript
 
 ```javascript
